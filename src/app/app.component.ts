@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ngx-liquid-gauge-app';
+  second = 22;
+  add(v:any) {
+    this.second = v.target.value;
+  }
 }

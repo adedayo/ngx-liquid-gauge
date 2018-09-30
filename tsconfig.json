@@ -16,6 +16,14 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-liquid-gauge": [
+        "dist/ngx-liquid-gauge"
+      ],
+      "ngx-liquid-gauge/*": [
+        "dist/ngx-liquid-gauge/*"
+      ]
+    }
   }
 }

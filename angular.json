@@ -121,6 +121,41 @@
           }
         }
       }
+    },
+    "ngx-liquid-gauge": {
+      "root": "projects/ngx-liquid-gauge",
+      "sourceRoot": "projects/ngx-liquid-gauge/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-liquid-gauge/tsconfig.lib.json",
+            "project": "projects/ngx-liquid-gauge/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-liquid-gauge/src/test.ts",
+            "tsConfig": "projects/ngx-liquid-gauge/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-liquid-gauge/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-liquid-gauge/tsconfig.lib.json",
+              "projects/ngx-liquid-gauge/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "ngx-liquid-gauge-app"
