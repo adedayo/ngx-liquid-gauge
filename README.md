@@ -89,8 +89,8 @@ A few demonstrations
 | waveTextColor | The color of the value text when the wave overlaps it. | '#A4DBf8' | no | 
 
 ## Module Dependencies
-* Angular
-* D3
+* Angular (@angular/common and @angular/core, version 6 and above)
+* D3 (`npm install d3 --save`)
 
 ## License
 BSD 3-Clause https://opensource.org/licenses/BSD-3-Clause
