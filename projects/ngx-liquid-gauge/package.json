@@ -5,11 +5,14 @@
   "repository": "https://github.com/adedayo/ngx-liquid-gauge.git",
   "homepage": "https://github.com/adedayo/ngx-liquid-gauge",
   "keywords": [
-    "visualization", "d3", "gauge", "animation"
+    "visualization",
+    "d3",
+    "gauge",
+    "animation"
   ],
   "peerDependencies": {
-    "@angular/common": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0",
-    "@angular/core": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0",
+    "@angular/common": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0",
+    "@angular/core": "^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0",
     "d3": "^5.7.0"
   },
   "devDependencies": {
