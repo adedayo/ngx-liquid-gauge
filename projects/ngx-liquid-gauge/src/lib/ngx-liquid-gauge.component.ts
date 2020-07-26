@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, Input, OnChanges, SimpleChanges } from '@angular/core';
 import * as d3 from 'd3';
 import * as liquid from './liquidFillGauge';
 
@@ -36,7 +36,7 @@ export class NgxLiquidGaugeComponent implements OnInit, OnChanges {
 
   constructor() { }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.createChart();
   }
 
