@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, Input, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 import * as liquid from './liquidFillGauge';
 
@@ -7,10 +7,11 @@ import * as liquid from './liquidFillGauge';
   template: `<div #gauge></div>`,
   styles: []
 })
-export class NgxLiquidGaugeComponent implements OnInit, OnChanges {
+export class NgxLiquidGaugeComponent implements OnChanges, AfterViewInit {
 
   @ViewChild('gauge') gauge: any;
   id = 'gauge' + Math.floor(Math.random() * 100000) + 1; // assign a random ID to SVG component
+  initialised = false;
   private defaultSettings = liquid.liquidFillGaugeDefaultSettings();
   @Input() private value = 0;
   @Input() private minValue = this.defaultSettings.minValue;
@@ -36,12 +37,15 @@ export class NgxLiquidGaugeComponent implements OnInit, OnChanges {
 
   constructor() { }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.createChart();
+    this.initialised = true
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.createChart();
+    if (this.initialised) {
+      this.createChart();
+    }
   }
 
   createChart(): any {
