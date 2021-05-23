@@ -7,7 +7,7 @@
 
 # dependencies
 /node_modules
-
+projects/ngx-liquid-gauge/node_modules/
 # IDEs and editors
 /.idea
 .project
