@@ -1,7 +1,7 @@
 <h1>A Simple Angular Liquid Fill Gauge Demo</h1>
 
 <h2>Default Parameters</h2>
-<lib-ngx-liquid-gauge class="sample" [value]="'30'"></lib-ngx-liquid-gauge>
+<lib-ngx-liquid-gauge class="sample" [value]="30"></lib-ngx-liquid-gauge>
 
 
 
@@ -19,3 +19,9 @@
   [textVertPosition]=".5" [textSize]="1" [valueCountUp]="true" [displayPercent]="true" [textColor]="'#045681'"
   [waveTextColor]="'#A4DBf8'">
 </lib-ngx-liquid-gauge>
+
+<h2>Directive estructural example</h2>
+<ng-container *ngIf="(posicionMouse$ |async) as dataMouse">
+  <lib-ngx-liquid-gauge class="sample" [value]="(dataMouse.positionY/_innerWidth)*100"></lib-ngx-liquid-gauge>
+</ng-container>
+

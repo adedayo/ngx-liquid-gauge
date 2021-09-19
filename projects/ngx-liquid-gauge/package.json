@@ -19,6 +19,6 @@
     "tslib": "^2.3.1"
   },
   "devDependencies": {
-    "@types/d3": "^6.7.0"
+    "@types/d3": "^6.7.5"
   }
 }
