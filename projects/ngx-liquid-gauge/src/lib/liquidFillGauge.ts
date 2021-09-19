@@ -18,11 +18,11 @@ import { LiquidGaugeOptions } from './types/ngx-liquid-gauge-options.type';
  */
 export function liquidFillGaugeDefaultSettings(): LiquidGaugeOptions {
   return {
-    value:'0',
+    value: '0',
     minValue: 0, // The gauge minimum value.
     maxValue: 100, // The gauge maximum value.
-    heigth: 150,
-    width: 150,
+    heigth: 150, // The circle height
+    width: 150, // The circle width
     circleThickness: 0.05, // The outer circle thickness as a percentage of it's radius.
     circleFillGap: 0.05, // The size of the gap between the outer circle and wave circle as a percentage of the outer circles radius.
     circleColor: '#178BCA', // The color of the outer circle.
@@ -52,7 +52,7 @@ export function loadLiquidFillGauge(elementSelected: d3.Selection<Element, unkno
     config = liquidFillGaugeDefaultSettings();
   }
   const gauge = elementSelected.select('svg');
-  const radius = Math.min(config.width,config.heigth) / 2;
+  const radius = Math.min(config.width, config.heigth) / 2;
   const locationX = config.width / 2 - radius;
   const locationY = config.heigth / 2 - radius;
   let fillPercent = Math.max(config.minValue, Math.min(config.maxValue, parseFloat(config.value))) / config.maxValue;

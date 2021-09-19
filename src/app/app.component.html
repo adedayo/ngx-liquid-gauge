@@ -20,8 +20,7 @@
   [waveTextColor]="'#A4DBf8'">
 </lib-ngx-liquid-gauge>
 
-<h2>Directive estructural example</h2>
-<ng-container *ngIf="(posicionMouse$ |async) as dataMouse">
+<h2>Using structural directive (contributed by @jagjerez)</h2>
+<ng-container *ngIf="(mousePosition$ |async) as dataMouse">
   <lib-ngx-liquid-gauge class="sample" [value]="(dataMouse.positionY/_innerWidth)*100"></lib-ngx-liquid-gauge>
 </ng-container>
-
