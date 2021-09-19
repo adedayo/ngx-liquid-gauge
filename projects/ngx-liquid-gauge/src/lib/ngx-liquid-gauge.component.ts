@@ -1,11 +1,21 @@
 import { Component, AfterViewInit, ViewChild, Input, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import * as liquid from './liquidFillGauge';
+import { LiquidGaugeOptions } from './types/ngx-liquid-gauge-options.type';
 
 @Component({
   selector: 'lib-ngx-liquid-gauge',
   template: `<div #gauge></div>`,
-  styles: []
+  styles: [`
+  :host ::ng-deep .center{
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }`]
 })
 export class NgxLiquidGaugeComponent implements OnChanges, AfterViewInit {
 
@@ -13,7 +23,7 @@ export class NgxLiquidGaugeComponent implements OnChanges, AfterViewInit {
   id = 'gauge' + Math.floor(Math.random() * 100000) + 1; // assign a random ID to SVG component
   initialised = false;
   private defaultSettings = liquid.liquidFillGaugeDefaultSettings();
-  @Input() private value = 0;
+  @Input() private value = this.defaultSettings.value;
   @Input() private minValue = this.defaultSettings.minValue;
   @Input() private maxValue = this.defaultSettings.maxValue;
   @Input() private circleThickness = this.defaultSettings.circleThickness;
@@ -34,12 +44,14 @@ export class NgxLiquidGaugeComponent implements OnChanges, AfterViewInit {
   @Input() private displayPercent = this.defaultSettings.displayPercent;
   @Input() private textColor = this.defaultSettings.textColor;
   @Input() private waveTextColor = this.defaultSettings.waveTextColor;
+  @Input() private heigth = this.defaultSettings.heigth;
+  @Input() private width = this.defaultSettings.width;
 
   constructor() { }
 
   ngAfterViewInit(): void {
-    this.createChart();
-    this.initialised = true
+      this.createChart();
+      this.initialised = true;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -51,13 +63,21 @@ export class NgxLiquidGaugeComponent implements OnChanges, AfterViewInit {
   createChart(): any {
     const element: Element = this.gauge.nativeElement;
     //clear previous chart
-    d3.select(element).selectAll('*').remove();
+    const elementSelected = d3.select(element);
+    //d3.select(element).selectAll('*').remove();
+    elementSelected.selectAll('*').remove();
+    elementSelected.attr('class','center');
 
-    d3.select(element)
+    /*d3.select(element)
       .append('svg').attr('id', this.id)
       .attr('width', '150')
-      .attr('height', '150');
-    const settings = {
+      .attr('height', '150');*/
+    elementSelected
+      .append('svg').attr('id', this.id)
+      .attr('width', this.width)
+      .attr('height', this.heigth);
+    const settings: LiquidGaugeOptions = {
+      value: this.value,
       minValue: this.minValue,
       maxValue: this.maxValue,
       circleThickness: this.circleThickness,
@@ -78,8 +98,10 @@ export class NgxLiquidGaugeComponent implements OnChanges, AfterViewInit {
       displayPercent: this.displayPercent,
       textColor: this.textColor,
       waveTextColor: this.waveTextColor,
+      width: this.width,
+      heigth: this.heigth
     };
-    liquid.loadLiquidFillGauge(this.id, this.value, settings);
+    liquid.loadLiquidFillGauge(elementSelected, settings);
   }
 
 }

@@ -7,6 +7,7 @@
 
 
 import * as d3 from 'd3';
+import { LiquidGaugeOptions } from './types/ngx-liquid-gauge-options.type';
 
 /*!
  * @license Open source under BSD 2-clause (http://choosealicense.com/licenses/bsd-2-clause/)
@@ -15,10 +16,13 @@ import * as d3 from 'd3';
  *
  * Liquid Fill Gauge v1.1
  */
-export function liquidFillGaugeDefaultSettings() {
+export function liquidFillGaugeDefaultSettings(): LiquidGaugeOptions {
   return {
+    value:'0',
     minValue: 0, // The gauge minimum value.
     maxValue: 100, // The gauge maximum value.
+    heigth: 150,
+    width: 150,
     circleThickness: 0.05, // The outer circle thickness as a percentage of it's radius.
     circleFillGap: 0.05, // The size of the gap between the outer circle and wave circle as a percentage of the outer circles radius.
     circleColor: '#178BCA', // The color of the outer circle.
@@ -43,15 +47,15 @@ export function liquidFillGaugeDefaultSettings() {
   };
 }
 
-export function loadLiquidFillGauge(elementId, value, config) {
+export function loadLiquidFillGauge(elementSelected: d3.Selection<Element, unknown, null, undefined>, config: LiquidGaugeOptions) {
   if (config == null) {
     config = liquidFillGaugeDefaultSettings();
   }
-  const gauge = d3.select('#' + elementId);
-  const radius = Math.min(parseInt(gauge.style('width'), 10), parseInt(gauge.style('height'), 10)) / 2;
-  const locationX = parseInt(gauge.style('width'), 10) / 2 - radius;
-  const locationY = parseInt(gauge.style('height'), 10) / 2 - radius;
-  let fillPercent = Math.max(config.minValue, Math.min(config.maxValue, value)) / config.maxValue;
+  const gauge = elementSelected.select('svg');
+  const radius = Math.min(config.width,config.heigth) / 2;
+  const locationX = config.width / 2 - radius;
+  const locationY = config.heigth / 2 - radius;
+  let fillPercent = Math.max(config.minValue, Math.min(config.maxValue, parseFloat(config.value))) / config.maxValue;
 
   let waveHeightScale;
   if (config.waveHeightScaling) {
@@ -65,7 +69,7 @@ export function loadLiquidFillGauge(elementId, value, config) {
   }
 
   const textPixels = (config.textSize * radius / 2);
-  const textFinalValue = parseFloat(value).toFixed(2);
+  const textFinalValue = parseFloat(config.value).toFixed(2);
   const textStartValue = config.valueCountUp ? config.minValue : textFinalValue;
   const percentText = config.displayPercent ? '%' : '';
   const circleThickness = config.circleThickness * radius;
@@ -163,7 +167,7 @@ export function loadLiquidFillGauge(elementId, value, config) {
     });
   const waveGroup = gaugeGroup.append('defs')
     .append('clipPath')
-    .attr('id', 'clipWave' + elementId);
+    .attr('id', 'clipWave' + gauge.attr('id'));
   const wave = waveGroup.append('path')
     .datum(data)
     .attr('d', clipArea)
@@ -171,7 +175,7 @@ export function loadLiquidFillGauge(elementId, value, config) {
 
   // The inner circle with the clipping wave attached.
   const fillCircleGroup = gaugeGroup.append('g')
-    .attr('clip-path', 'url(#clipWave' + elementId + ')');
+    .attr('clip-path', 'url(#clipWave' + gauge.attr('id') + ')');
   fillCircleGroup.append('circle')
     .attr('cx', radius)
     .attr('cy', radius)
@@ -254,7 +258,7 @@ export function loadLiquidFillGauge(elementId, value, config) {
       }
 
       const textTween = () => {
-        const i = d3.interpolate(this.textContent, parseFloat(value).toFixed(2));
+        const i = d3.interpolate(this.textContent, parseFloat(config.value).toFixed(2));
         return function (t) {
           this.textContent = textRounderUpdater(i(t)) + percentText;
         };
@@ -267,7 +271,7 @@ export function loadLiquidFillGauge(elementId, value, config) {
         .duration(config.waveRiseTime)
         .tween('text', textTween);
 
-      fillPercent = Math.max(config.minValue, Math.min(config.maxValue, value)) / config.maxValue;
+      fillPercent = Math.max(config.minValue, Math.min(config.maxValue, parseFloat(config.value))) / config.maxValue;
       waveHeight = fillCircleRadius * waveHeightScale(fillPercent * 100);
       waveRiseScale = d3.scaleLinear()
         // The clipping area size is the height of the fill circle + the wave height, so we position the clip wave
