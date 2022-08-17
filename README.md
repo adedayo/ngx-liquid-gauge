@@ -1,5 +1,7 @@
 # Angular Component for Curtis Bratton's D3 Liquid Fill Gauge
 
+[![npm version](https://badge.fury.io/js/ngx-liquid-gauge.svg)](https://badge.fury.io/js/ngx-liquid-gauge)
+
 I really liked Curtis Bratton's D3 Liquid Fill Gauge (code here: http://bl.ocks.org/brattonc/5e5ce9beee483220e2f6) and wanted to use it in an Angular project, so I turned it to a component and packaged it as a module in case somebody else finds it useful.
 
 In the process I upgraded the D3 API and made minor modifications to Curtis' code along the way as I converted it to Typescript from Javascript. However, all credits go to Curtis! My contribution was just the Angular component wrapper.
