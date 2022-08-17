@@ -23,35 +23,35 @@ export class NgxLiquidGaugeComponent implements OnChanges, AfterViewInit {
   id = 'gauge' + Math.floor(Math.random() * 100000) + 1; // assign a random ID to SVG component
   initialised = false;
   private defaultSettings = liquid.liquidFillGaugeDefaultSettings();
-  @Input() private value = this.defaultSettings.value;
-  @Input() private minValue = this.defaultSettings.minValue;
-  @Input() private maxValue = this.defaultSettings.maxValue;
-  @Input() private circleThickness = this.defaultSettings.circleThickness;
-  @Input() private circleFillGap = this.defaultSettings.circleFillGap;
-  @Input() private circleColor = this.defaultSettings.circleColor;
-  @Input() private waveHeight = this.defaultSettings.waveHeight;
-  @Input() private waveCount = this.defaultSettings.waveCount;
-  @Input() private waveRiseTime = this.defaultSettings.waveRiseTime;
-  @Input() private waveAnimateTime = this.defaultSettings.waveAnimateTime;
-  @Input() private waveRise = this.defaultSettings.waveRise;
-  @Input() private waveHeightScaling = this.defaultSettings.waveHeightScaling;
-  @Input() private waveAnimate = this.defaultSettings.waveAnimate;
-  @Input() private waveColor = this.defaultSettings.waveColor;
-  @Input() private waveOffset = this.defaultSettings.waveOffset;
-  @Input() private textVertPosition = this.defaultSettings.textVertPosition;
-  @Input() private textSize = this.defaultSettings.textSize;
-  @Input() private valueCountUp = this.defaultSettings.valueCountUp;
-  @Input() private displayPercent = this.defaultSettings.displayPercent;
-  @Input() private textColor = this.defaultSettings.textColor;
-  @Input() private waveTextColor = this.defaultSettings.waveTextColor;
-  @Input() private heigth = this.defaultSettings.heigth;
-  @Input() private width = this.defaultSettings.width;
+  @Input() value = this.defaultSettings.value;
+  @Input() minValue = this.defaultSettings.minValue;
+  @Input() maxValue = this.defaultSettings.maxValue;
+  @Input() circleThickness = this.defaultSettings.circleThickness;
+  @Input() circleFillGap = this.defaultSettings.circleFillGap;
+  @Input() circleColor = this.defaultSettings.circleColor;
+  @Input() waveHeight = this.defaultSettings.waveHeight;
+  @Input() waveCount = this.defaultSettings.waveCount;
+  @Input() waveRiseTime = this.defaultSettings.waveRiseTime;
+  @Input() waveAnimateTime = this.defaultSettings.waveAnimateTime;
+  @Input() waveRise = this.defaultSettings.waveRise;
+  @Input() waveHeightScaling = this.defaultSettings.waveHeightScaling;
+  @Input() waveAnimate = this.defaultSettings.waveAnimate;
+  @Input() waveColor = this.defaultSettings.waveColor;
+  @Input() waveOffset = this.defaultSettings.waveOffset;
+  @Input() textVertPosition = this.defaultSettings.textVertPosition;
+  @Input() textSize = this.defaultSettings.textSize;
+  @Input() valueCountUp = this.defaultSettings.valueCountUp;
+  @Input() displayPercent = this.defaultSettings.displayPercent;
+  @Input() textColor = this.defaultSettings.textColor;
+  @Input() waveTextColor = this.defaultSettings.waveTextColor;
+  @Input() heigth = this.defaultSettings.heigth;
+  @Input() width = this.defaultSettings.width;
 
   constructor() { }
 
   ngAfterViewInit(): void {
-      this.createChart();
-      this.initialised = true;
+    this.createChart();
+    this.initialised = true;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -66,7 +66,7 @@ export class NgxLiquidGaugeComponent implements OnChanges, AfterViewInit {
     const elementSelected = d3.select(element);
     //d3.select(element).selectAll('*').remove();
     elementSelected.selectAll('*').remove();
-    elementSelected.attr('class','center');
+    elementSelected.attr('class', 'center');
 
     /*d3.select(element)
       .append('svg').attr('id', this.id)
@@ -74,8 +74,8 @@ export class NgxLiquidGaugeComponent implements OnChanges, AfterViewInit {
       .attr('height', '150');*/
     elementSelected
       .append('svg').attr('id', this.id)
-      .attr('width', this.width)
-      .attr('height', this.heigth);
+      .attr('width', this.width || 150)
+      .attr('height', this.heigth || 150);
     const settings: LiquidGaugeOptions = {
       value: this.value,
       minValue: this.minValue,

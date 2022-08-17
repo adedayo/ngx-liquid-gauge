@@ -5,13 +5,13 @@
 
 
 
-<h2>Setting just the guage value</h2>
+<h2>Setting just the gauge value</h2>
 <input type="text" (keyup.enter)="add($event)" value="22">
 <div></div>
 <lib-ngx-liquid-gauge [value]="second"></lib-ngx-liquid-gauge>
 
 
-<h2>All the settings of the original Liquid Fill Guage implementation are exposed as inputs to the Angular Component
+<h2>All the settings of the original Liquid Fill Gauge implementation are exposed as inputs to the Angular Component
 </h2>
 <lib-ngx-liquid-gauge [value]="77" [minValue]="0" [maxValue]="100" [circleThickness]="0.05" [circleFillGap]="0.05"
   [circleColor]="'#178BCA'" [waveHeight]="0.05" [waveCount]="1" [waveRiseTime]="1000" [waveAnimateTime]="1000"
@@ -19,8 +19,3 @@
   [textVertPosition]=".5" [textSize]="1" [valueCountUp]="true" [displayPercent]="true" [textColor]="'#045681'"
   [waveTextColor]="'#A4DBf8'">
 </lib-ngx-liquid-gauge>
-
-<h2>Using structural directive (contributed by @jagjerez)</h2>
-<ng-container *ngIf="(mousePosition$ |async) as dataMouse">
-  <lib-ngx-liquid-gauge class="sample" [value]="(dataMouse.positionY/_innerWidth)*100"></lib-ngx-liquid-gauge>
-</ng-container>
