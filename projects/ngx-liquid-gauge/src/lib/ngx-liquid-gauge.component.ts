@@ -1,7 +1,5 @@
-import { Component, AfterViewInit, ViewChild, Input, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, Input, OnChanges, SimpleChanges } from '@angular/core';
 import * as d3 from 'd3';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
 import * as liquid from './liquidFillGauge';
 import { LiquidGaugeOptions } from './types/ngx-liquid-gauge-options.type';
 
@@ -23,7 +21,7 @@ export class NgxLiquidGaugeComponent implements OnChanges, AfterViewInit {
   id = 'gauge' + Math.floor(Math.random() * 100000) + 1; // assign a random ID to SVG component
   initialised = false;
   private defaultSettings = liquid.liquidFillGaugeDefaultSettings();
-  @Input() value = this.defaultSettings.value;
+  @Input() value = +this.defaultSettings.value;
   @Input() minValue = this.defaultSettings.minValue;
   @Input() maxValue = this.defaultSettings.maxValue;
   @Input() circleThickness = this.defaultSettings.circleThickness;

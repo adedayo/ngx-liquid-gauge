@@ -1,7 +1,7 @@
 export interface LiquidGaugeOptions {
   value: string | number;
-  width?: number;//width of the circle (new properties)
-  heigth?: number;//heigth of the circle
+  width?: number;
+  heigth?: number;
   minValue?: number;
   maxValue?: number;
   circleThickness?: number;

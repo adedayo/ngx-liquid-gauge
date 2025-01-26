@@ -56,20 +56,14 @@ export function loadLiquidFillGauge(elementSelected: d3.Selection<Element, unkno
   const locationY = (config.heigth || 150) / 2 - radius;
   let fillPercent = Math.max((config.minValue || 0), Math.min((config.maxValue || 100), parseFloat('' + config.value))) / (config.maxValue || 100);
 
-  let waveHeightScale;
-  if (config.waveHeightScaling) {
-    waveHeightScale = d3.scaleLinear()
-      .range([0, (config.waveHeight || 0.05), 0])
-      .domain([0, 50, 100]);
-  } else {
-    waveHeightScale = d3.scaleLinear()
-      .range([(config.waveHeight || 0.05), (config.waveHeight || 0.05)])
-      .domain([0, 100]);
-  }
+  const waveHeightScale = config.waveHeightScaling
+    ? d3.scaleLinear().range([0, config.waveHeight!, 0]).domain([0, 50, 100])
+    : d3.scaleLinear().range([config.waveHeight!, config.waveHeight!]).domain([0, 100]);
 
   const textPixels = ((config.textSize || 1) * radius / 2);
-  const textFinalValue = parseFloat('' + config.value).toFixed(2);
-  const textStartValue = config.valueCountUp ? config.minValue : textFinalValue;
+  const textFinalValue: number = +(+config.value).toFixed(2);
+
+  const textStartValue: number = config.valueCountUp ? config.minValue || 0 : textFinalValue;
   const percentText = config.displayPercent ? '%' : '';
   const circleThickness = (config.circleThickness || 0.05) * radius;
   const circleFillGap = (config.circleFillGap || 0.05) * radius;
@@ -82,17 +76,16 @@ export function loadLiquidFillGauge(elementSelected: d3.Selection<Element, unkno
   const waveClipWidth = waveLength * waveClipCount;
 
   // Rounding functions so that the correct number of decimal places is always displayed as the value counts up.
-  let textRounder = function (val) {
-    return '' + Math.round(val);
-  };
-  if (parseFloat(textFinalValue) !== parseFloat(textRounder(textFinalValue))) {
-    textRounder = function (val) {
-      return parseFloat(val).toFixed(1);
+  let textRounder = (val: number) => Math.round(val);
+
+  if (textFinalValue !== textRounder(textFinalValue)) {
+    textRounder = function (val: number) {
+      return +val.toFixed(1);
     };
   }
-  if (parseFloat(textFinalValue) !== parseFloat(textRounder(textFinalValue))) {
-    textRounder = function (val) {
-      return parseFloat(val).toFixed(2);
+  if (textFinalValue !== textRounder(textFinalValue)) {
+    textRounder = function (val: number) {
+      return +val.toFixed(2);
     };
   }
 
@@ -169,7 +162,7 @@ export function loadLiquidFillGauge(elementSelected: d3.Selection<Element, unkno
     .attr('id', 'clipWave' + gauge.attr('id'));
   const wave = waveGroup.append('path')
     .datum(data)
-    .attr('d', clipArea)
+    .attr('d', clipArea as any)
     .attr('T', 0);
 
   // The inner circle with the clipping wave attached.
@@ -180,6 +173,7 @@ export function loadLiquidFillGauge(elementSelected: d3.Selection<Element, unkno
     .attr('cy', radius)
     .attr('r', fillCircleRadius)
     .style('fill', config.waveColor || 'blue');
+
 
   // Text where the wave does overlap.
   const text2 = fillCircleGroup.append('text')
@@ -192,9 +186,13 @@ export function loadLiquidFillGauge(elementSelected: d3.Selection<Element, unkno
 
   // Make the value count up.
   if (config.valueCountUp) {
-    const textTween = function g() {
-      const i = d3.interpolate(this.textContent, textFinalValue);
-      return (t) => {
+    const textTween = function g(this: any) {
+      //remove trailing % sign
+      const content = +this.textContent.replace('%', '');
+
+      const i = d3.interpolateNumber(content, textFinalValue);
+      const self = this
+      return (t: number) => {
         this.textContent = textRounder(i(t)) + percentText;
       };
     };
@@ -239,27 +237,33 @@ export function loadLiquidFillGauge(elementSelected: d3.Selection<Element, unkno
       });
   }
 
-  function GaugeUpdater() {
-    this.update = function (val) {
-      const newFinalValue = parseFloat(val).toFixed(2);
-      let textRounderUpdater = function (val2) {
-        return '' + Math.round(val2);
+  class GaugeUpdater {
+
+    textContent: string = '0%'
+
+    update(val: number): void {
+      const newFinalValue = +val.toFixed(2);
+      let textRounderUpdater = function (val2: number) {
+        return Math.round(val2);
       };
-      if (parseFloat(newFinalValue) !== parseFloat(textRounderUpdater(newFinalValue))) {
+      if (newFinalValue !== textRounderUpdater(newFinalValue)) {
         textRounderUpdater = function (val2) {
-          return parseFloat(val2).toFixed(1);
+          return +val2.toFixed(1);
         };
       }
-      if (parseFloat(newFinalValue) !== parseFloat(textRounderUpdater(newFinalValue))) {
+      if (newFinalValue !== textRounderUpdater(newFinalValue)) {
         textRounderUpdater = function (val2) {
-          return parseFloat(val2).toFixed(2);
+          return +val2.toFixed(2);
         };
       }
 
       const textTween = () => {
-        const i = d3.interpolate(this.textContent, parseFloat('' + config.value).toFixed(2));
-        return function (t) {
-          this.textContent = textRounderUpdater(i(t)) + percentText;
+        //remove trailing % sign
+        const content = this.textContent.replace('%', '');
+        const i = d3.interpolateNumber(+content, +(+config.value).toFixed(2));
+        const self = this
+        return function (t: number) {
+          self.textContent = textRounderUpdater(i(t)) + percentText;
         };
       };
 
@@ -303,7 +307,7 @@ export function loadLiquidFillGauge(elementSelected: d3.Selection<Element, unkno
         .transition()
         .duration(config.waveAnimate ? ((config.waveAnimateTime || 1800) * (1 - +wave.attr('T'))) : (config.waveRiseTime || 1000))
         .ease(d3.easeLinear)
-        .attr('d', newClipArea)
+        .attr('d', newClipArea as any)
         .attr('transform', 'translate(' + newWavePosition + ',0)')
         .attr('T', '1')
         .on('start', () => {
@@ -315,6 +319,8 @@ export function loadLiquidFillGauge(elementSelected: d3.Selection<Element, unkno
       waveGroup.transition()
         .duration(config.waveRiseTime || 1000)
         .attr('transform', 'translate(' + waveGroupXPosition + ',' + newHeight + ')');
+
+
     };
   }
 

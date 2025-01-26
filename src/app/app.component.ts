@@ -1,10 +1,11 @@
-import { HostListener, Component } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Component } from '@angular/core';
+import { NgxLiquidGaugeComponent } from 'ngx-liquid-gauge';
 
 @Component({
   selector: 'app-root',
+  imports: [NgxLiquidGaugeComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'ngx-liquid-gauge-app';
