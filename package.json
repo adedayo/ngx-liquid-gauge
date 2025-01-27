@@ -8,7 +8,7 @@
     "build-lib": "ng build ngx-liquid-gauge",
     "dev-lib": "ng build ngx-liquid-gauge --watch",
     "patch-version": "npm run build-lib && cd dist/ngx-liquid-gauge && npm version patch",
-    "publish": "npm run patch-version && npm publish",
+    "publish": "npm run patch-version && cd dist/ngx-liquid-gauge && npm publish",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

@@ -1,7 +1,8 @@
-import { Component, AfterViewInit, ViewChild, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, Input, OnChanges, SimpleChanges, Inject, PLATFORM_ID } from '@angular/core';
 import * as d3 from 'd3';
 import * as liquid from './liquidFillGauge';
 import { LiquidGaugeOptions } from './types/ngx-liquid-gauge-options.type';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'lib-ngx-liquid-gauge',
@@ -45,11 +46,14 @@ export class NgxLiquidGaugeComponent implements OnChanges, AfterViewInit {
   @Input() heigth = this.defaultSettings.heigth;
   @Input() width = this.defaultSettings.width;
 
-  constructor() { }
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngAfterViewInit(): void {
-    this.createChart();
-    this.initialised = true;
+    if (isPlatformBrowser(this.platformId)) {
+      //will only run in the browser
+      this.createChart();
+      this.initialised = true;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
